@@ -23,7 +23,8 @@ except:
 
 from OpenSSL import crypto
 
-from . import certlib
+#from .c import certlib
+import certlib
 
 DOWNLOAD_CONCURRENCY = 50
 MAX_QUEUE_SIZE = 1000
@@ -206,15 +207,16 @@ def process_worker(result_info):
                 "url": result_info['log_info']['url'],
             }
 
-            chain_hash = hashlib.sha256("".join([x['as_der'] for x in cert_data['chain']]).encode('ascii')).hexdigest()
+            #chain_hash = hashlib.sha256("".join([x['as_der'] for x in cert_data['chain']]).encode('ascii')).hexdigest()
+            cert_sha256 = hashlib.sha256(str(cert_data['leaf_cert']['as_der']).encode('utf-8')).hexdigest()
 
             # header = "url, cert_index, chain_hash, cert_der, all_domains, not_before, not_after"
             lines.append(
                 ",".join([
-                    result_info['log_info']['url'],
-                    str(entry['cert_index']),
-                    chain_hash,
-                    cert_data['leaf_cert']['as_der'],
+                    #result_info['log_info']['url'],
+                    #str(entry['cert_index']),
+                    #chain_hash,
+                    str(cert_sha256),
                     ' '.join(cert_data['leaf_cert']['all_domains']),
                     str(cert_data['leaf_cert']['not_before']),
                     str(cert_data['leaf_cert']['not_after'])
