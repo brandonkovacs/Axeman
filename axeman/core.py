@@ -218,8 +218,8 @@ def process_worker(result_info):
                     #chain_hash,
                     str(cert_sha256),
                     ' '.join(cert_data['leaf_cert']['all_domains']),
-                    str(cert_data['leaf_cert']['not_before']),
-                    str(cert_data['leaf_cert']['not_after'])
+                    str(int(float(str(cert_data['leaf_cert']['not_before'])))),
+                    str(int(float(str(cert_data['leaf_cert']['not_after']))))
                 ]) + "\n"
             )
 
